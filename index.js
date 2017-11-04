@@ -10,7 +10,7 @@ function AccountKit() {
   var base_url = "https://graph.accountkit.com/";
 
   return {
-    set: function(id, secret, version) {
+    configure: function(id, secret, version) {
       app_id = id;
       app_secret = secret;
       if (version !== undefined) {
