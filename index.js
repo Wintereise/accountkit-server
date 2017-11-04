@@ -35,49 +35,53 @@ function AccountKit() {
     getTokenExchangeEnpoint: function() {
       return base_url + api_version + "/access_token";
     },
-    getAccountInfo: function(authorization_code, callback) {
-      var self = this;
+    getAccountInfo: function(authorization_code) {
+      return new Promise(function (resolve, reject) {
+          var self = this;
 
-      var params = {
-        grant_type: 'authorization_code',
-        code: authorization_code,
-        access_token: this.getAppAccessToken(),
-      };
+          var params = {
+            grant_type: 'authorization_code',
+            code: authorization_code,
+            access_token: this.getAppAccessToken(),
+         };
 
-      var token_exchange_url = this.getTokenExchangeEnpoint() + '?' + Querystring.stringify(params);
-      Request.get({
-        url: token_exchange_url,
-        json: true
-      }, function(error, resp, respBody) {
-        if (error) {
-          return callback(error);
-        } else if (respBody.error) {
-          return callback(respBody.error);
-        } else if (resp.statusCode !== 200) {
-          var errorMsg = "Invalid AccountKit Graph API status code (" + resp.statusCode + ")";
-          return callback(errorMsg);
-        }
-
-        var me_endpoint_url = self.getInfoEndpoint() + '?access_token=' + respBody.access_token;
-        if (require_app_secret) {
-          me_endpoint_url += '&appsecret_proof=' + Crypto.createHmac('sha256', app_secret).update(respBody.access_token).digest('hex');
-        }
-
+        var token_exchange_url = this.getTokenExchangeEnpoint() + '?' + Querystring.stringify(params);
+        
         Request.get({
-          url: me_endpoint_url,
+          url: token_exchange_url,
           json: true
         }, function(error, resp, respBody) {
-          if (error) {
-            return callback(error);
-          } else if (respBody.error) {
-            return callback(respBody.error);
-          } else if (resp.statusCode !== 200) {
-            var errorMsg = "Invalid AccountKit Graph API status code (" + resp.statusCode + ")";
-            return callback(errorMsg);
-          }
+            if (error) {
+              return reject(error);
+            } else if (respBody.error) {
+              return reject(respBody.error);
+            } else if (resp.statusCode !== 200) {
+              var errorMsg = "Invalid AccountKit Graph API status code (" + resp.statusCode + ")";
+              return reject(new Error(errorMsg);
+            }
 
-          return callback(null, respBody);
+           var me_endpoint_url = self.getInfoEndpoint() + '?access_token=' + respBody.access_token;
+              
+           if (require_app_secret) {
+              me_endpoint_url += '&appsecret_proof=' + Crypto.createHmac('sha256', app_secret).update(respBody.access_token).digest('hex');
+           }
+
+           Request.get({
+            url: me_endpoint_url,
+            json: true
+          }, function(error, resp, respBody) {
+            if (error) {
+              return reject(error);
+            } else if (respBody.error) {
+              return reject(respBody.error);
+            } else if (resp.statusCode !== 200) {
+              var errorMsg = "Invalid AccountKit Graph API status code (" + resp.statusCode + ")";
+              return callback(new Error(errorMsg);
+            }
+
+          return resolve(respBody);
         });
+      });
       });
     },
     removeUser: function(id, callback) {
