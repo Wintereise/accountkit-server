@@ -26,7 +26,11 @@ function AccountKit() {
     getAppAccessToken: function() {
       return ['AA', app_id, app_secret].join('|');
     },
-    getInfoEndpoint: function() {
+    getInfoEndpoint: function(me_fields) {
+      if (me_fields) {
+           return base_url + api_version + "/me" + "?fields=" + me_fields.join(',');
+      }
+      
       return base_url + api_version + "/me";
     },
     getRemovalEndpoint: function(id) {
@@ -35,7 +39,7 @@ function AccountKit() {
     getTokenExchangeEnpoint: function() {
       return base_url + api_version + "/access_token";
     },
-    getAccountInfo: function(authorization_code) {
+    getAccountInfo: function(authorization_code, me_fields) {
       return new Promise(function (resolve, reject) {
           var self = this;
 
@@ -63,7 +67,7 @@ function AccountKit() {
               return;
             }
 
-           var me_endpoint_url = self.getInfoEndpoint() + '?access_token=' + respBody.access_token;
+           var me_endpoint_url = self.getInfoEndpoint(me_fields) + '?access_token=' + respBody.access_token;
            var token = respBody.access_token;
               
            if (require_app_secret) {
