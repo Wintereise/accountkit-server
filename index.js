@@ -52,15 +52,19 @@ function AccountKit() {
           json: true
         }, function(error, resp, respBody) {
             if (error) {
-              return reject(error);
+              reject(error);
+              return;
             } else if (respBody.error) {
-              return reject(respBody.error);
+              reject(respBody.error);
+              return;
             } else if (resp.statusCode !== 200) {
               var errorMsg = "Invalid AccountKit Graph API status code (" + resp.statusCode + ")";
-              return reject(new Error(errorMsg);
+              reject(new Error(errorMsg);
+              return;
             }
 
            var me_endpoint_url = self.getInfoEndpoint() + '?access_token=' + respBody.access_token;
+           var token = respBody.access_token;
               
            if (require_app_secret) {
               me_endpoint_url += '&appsecret_proof=' + Crypto.createHmac('sha256', app_secret).update(respBody.access_token).digest('hex');
@@ -71,37 +75,45 @@ function AccountKit() {
             json: true
           }, function(error, resp, respBody) {
             if (error) {
-              return reject(error);
+              reject(error);
+              return;
             } else if (respBody.error) {
-              return reject(respBody.error);
+              reject(respBody.error);
+              return;
             } else if (resp.statusCode !== 200) {
               var errorMsg = "Invalid AccountKit Graph API status code (" + resp.statusCode + ")";
-              return callback(new Error(errorMsg);
+              reject(new Error(errorMsg);
+              return;
             }
 
-          return resolve(respBody);
+           resolve(Object.assign(respBody, { token: token });
         });
       });
       });
     },
-    removeUser: function(id, callback) {
-      var self = this;
-      var delUrl = this.getRemovalEndpoint(id) + "?" + "access_token=" + this.getAppAccessToken();
+    removeUser: function(id) {
+      return new Promise(function (resolve, reject) {
+        var self = this;
+        var delUrl = this.getRemovalEndpoint(id) + "?" + "access_token=" + this.getAppAccessToken();
 
-      Request.del({
-        url: delUrl,
-        json: true
-      }, function(error, resp, respBody) {
-        if (error) {
-          return callback(error);
-        } else if (respBody.error) {
-          return callback(respBody.error);
-        } else if (resp.statusCode !== 200) {
-          var errorMsg = "Invalid AccountKit Graph API status code (" + resp.statusCode + ")";
-          return callback(errorMsg);
-        }
+        Request.del({
+          url: delUrl,
+          json: true
+        }, function(error, resp, respBody) {
+          if (error) {
+            reject(error);
+            return;
+          } else if (respBody.error) {
+            reject(respBody.error);
+            return;
+          } else if (resp.statusCode !== 200) {
+            var errorMsg = "Invalid AccountKit Graph API status code (" + resp.statusCode + ")";
+            reject(new Error(errorMsg));
+            return;
+          }
 
-        return callback(null, respBody);
+          resolve(respBody);
+      });
       });
     }
   };
