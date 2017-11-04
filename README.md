@@ -125,7 +125,7 @@ try {
 
 | Function       | Parameters                                  | Definition                                                                                                                    | Returns |
 |----------------|---------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|---------|
-| getAccountInfo | authorizationCode: String                   | Returns the user from the auth code sent from the client. This information can be used to create a new User in the database.  | Promise |
+| getAccountInfo | authorizationCode: String, me_fields: Array | Returns the user from the auth code sent from the client. This information can be used to create a new User in the database.  | Promise |
 | removeUser     | id: String                                  | Removed the user from AccountKit via the identifier given from getAccountInfo                                                 | Promise |
 | configure      | id: String, secret: String, version: Strign | Configures the AccountKit kit app with the provided information                                                               | Null    |                                        |         |   |
 
