@@ -11,7 +11,7 @@ Other optimizations have been made too.
 Full documentation for account kit can be found here [https://developers.facebook.com/docs/accountkit/web](https://developers.facebook.com/docs/accountkit/web)
 
 ### Version
-0.45.0
+0.45.1
 
 ### Installation
 
@@ -43,7 +43,7 @@ import AccountKit from 'accountkit-server';
 
 **Step 2** Configure account kit.
 ```javascript
-Accountkit.configure('<APP_ID>', '<ACCOUNT_KIT_APP_SECRET>'); 
+Accountkit.configure('<APP_ID>', '<ACCOUNT_KIT_APP_SECRET>', '<ACCOUNT_KIT_VERSION> (Default 1.1)'); 
 
 /**
 * Default value is true
