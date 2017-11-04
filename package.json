@@ -8,7 +8,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/taina0407/node-accountkit.git"
+        "url": "git+https://github.com/jesster2k10/accountkit-server.git"
     },
     "keywords": [
         "nodejs accountkit",
