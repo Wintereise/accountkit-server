@@ -40,9 +40,7 @@ function AccountKit() {
       return base_url + api_version + "/access_token";
     },
     getAccountInfo: function(authorization_code, me_fields) {
-      return new Promise(function (resolve, reject) {
-          var self = this;
-
+      return new Promise((resolve, reject) => {
           var params = {
             grant_type: 'authorization_code',
             code: authorization_code,
@@ -63,7 +61,7 @@ function AccountKit() {
               return;
             } else if (resp.statusCode !== 200) {
               var errorMsg = "Invalid AccountKit Graph API status code (" + resp.statusCode + ")";
-              reject(new Error(errorMsg);
+              reject(new Error(errorMsg));
               return;
             }
 
@@ -86,11 +84,11 @@ function AccountKit() {
               return;
             } else if (resp.statusCode !== 200) {
               var errorMsg = "Invalid AccountKit Graph API status code (" + resp.statusCode + ")";
-              reject(new Error(errorMsg);
+              reject(new Error(errorMsg));
               return;
             }
 
-           resolve(Object.assign(respBody, { token: token });
+           resolve(Object.assign(respBody, { token: token }));
         });
       });
       });
