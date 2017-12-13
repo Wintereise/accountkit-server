@@ -43,7 +43,7 @@ import AccountKit from 'accountkit-server';
 
 **Step 2** Configure account kit.
 ```javascript
-Accountkit.configure('<APP_ID>', '<ACCOUNT_KIT_APP_SECRET>', '<ACCOUNT_KIT_VERSION> (Default 1.1)'); 
+AccountKit.configure('<APP_ID>', '<ACCOUNT_KIT_APP_SECRET>', '<ACCOUNT_KIT_VERSION> (Default 1.1)'); 
 
 /**
 * Default value is true

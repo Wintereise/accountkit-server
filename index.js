@@ -52,7 +52,7 @@ function AccountKit() {
         Request.get({
           url: token_exchange_url,
           json: true
-        }, function(error, resp, respBody) {
+        }, (error, resp, respBody) => {
             if (error) {
               reject(error);
               return;
@@ -65,7 +65,7 @@ function AccountKit() {
               return;
             }
 
-           var me_endpoint_url = self.getInfoEndpoint(me_fields) + '?access_token=' + respBody.access_token;
+           var me_endpoint_url = this.getInfoEndpoint(me_fields) + '?access_token=' + respBody.access_token;
            var token = respBody.access_token;
               
            if (require_app_secret) {
@@ -75,7 +75,7 @@ function AccountKit() {
            Request.get({
             url: me_endpoint_url,
             json: true
-          }, function(error, resp, respBody) {
+          }, (error, resp, respBody) => {
             if (error) {
               reject(error);
               return;
@@ -94,14 +94,13 @@ function AccountKit() {
       });
     },
     removeUser: function(id) {
-      return new Promise(function (resolve, reject) {
-        var self = this;
+      return new Promise((resolve, reject) => {
         var delUrl = this.getRemovalEndpoint(id) + "?" + "access_token=" + this.getAppAccessToken();
 
         Request.del({
           url: delUrl,
           json: true
-        }, function(error, resp, respBody) {
+        }, (error, resp, respBody) => {
           if (error) {
             reject(error);
             return;
